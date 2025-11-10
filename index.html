@@ -633,35 +633,35 @@
                 name: 'Mathematics',
                 topics: [
                     { name: 'Introduction', rigid: 1, flexible: 1 },
-                    { name: 'Formation of large numbers', rigid: 1, flexible: 0.5 },
-                    { name: 'Place Value Chart', rigid: 1, flexible: 2 },
+                    { name: 'Formation of large numbers', rigid: 1, flexible: 1 },
+                    { name: 'Place Value Chart', rigid: 1, flexible: 1 },
                     { name: 'Comparison of Numbers', rigid: 1, flexible: 1 },
-                    { name: 'Creating New Numbers', rigid: 1, flexible: 0.5 },
+                    { name: 'Creating New Numbers', rigid: 1, flexible: 1 },
                     { name: 'Use of Large Numbers in Daily Life Situations', rigid: 1, flexible: 1 },
-                    { name: 'Order of Operations', rigid: 1, flexible: 2 },
-                    { name: 'Estimation of numbers', rigid: 1, flexible: 0.5 },
+                    { name: 'Order of Operations', rigid: 1, flexible: 1 },
+                    { name: 'Estimation of numbers', rigid: 1, flexible: 1 },
                     { name: 'Whole Numbers', rigid: 1, flexible: 1 },
-                    { name: 'Properties of Whole Numbers', rigid: 1, flexible: 0.5 }
+                    { name: 'Properties of Whole Numbers', rigid: 1, flexible: 1 }
                 ]
             },
             science: {
                 name: 'Science',
                 topics: [
-                    { name: 'Need of measurements in daily life', rigid: 2, flexible: 1 },
-                    { name: 'Define length, mass and time', rigid: 2, flexible: 3.5 },
-                    { name: 'Values of physical quantities and units', rigid: 2, flexible: 3.5 },
-                    { name: 'Errors', rigid: 2, flexible: 1 },
-                    { name: 'Measuring tools', rigid: 2, flexible: 1 }
+                    { name: 'Need of measurements in daily life', rigid: 2, flexible: 2 },
+                    { name: 'Define length, mass and time', rigid: 2, flexible: 2 },
+                    { name: 'Values of physical quantities and units', rigid: 2, flexible: 2 },
+                    { name: 'Errors', rigid: 2, flexible: 2 },
+                    { name: 'Measuring tools', rigid: 2, flexible: 2 }
                 ]
             },
             social: {
                 name: 'Social Science',
                 topics: [
-                    { name: 'Origin of human', rigid: 2, flexible: 3 },
-                    { name: 'Different stages of human evolution', rigid: 2, flexible: 3 },
+                    { name: 'Origin of human', rigid: 2, flexible: 2 },
+                    { name: 'Different stages of human evolution', rigid: 2, flexible: 2 },
                     { name: 'Pre-historic humans', rigid: 2, flexible: 2 },
-                    { name: 'Paintings', rigid: 2, flexible: 1 },
-                    { name: 'Tools and Weapons', rigid: 2, flexible: 1 }
+                    { name: 'Paintings', rigid: 2, flexible: 2 },
+                    { name: 'Tools and Weapons', rigid: 2, flexible: 2 }
                 ]
             }
         };
@@ -1034,16 +1034,14 @@
 
             const isValid = Math.abs(total - 10) < 0.1;
 
-            // Build confirmation message
-            let message = `📝 You have made changes to the ${subject.name} lesson schedule.\n\n`;
-            message += 'Your customized plan:\n\n';
-            message += `${subject.name}: ${total.toFixed(1)} hours ${isValid ? '✓' : '⚠ (Should be 10 hours)'}\n`;
-
+            // Strict validation - block submission if total is not 10 hours
             if (!isValid) {
-                message += '\n⚠ Warning: Your subject does not total 10 hours.\n';
+                alert(`❌ Submission Failed\n\nYour ${subject.name} schedule totals ${total.toFixed(1)} hours, but it must equal exactly 10 hours.\n\nPlease adjust your hours and try again.\n\nCurrent total: ${total.toFixed(1)} hours\nRequired total: 10 hours\nDifference: ${(total - 10).toFixed(1)} hours`);
+                return;
             }
 
-            message += '\nDo you want to submit these changes?';
+            // Build confirmation message for valid submission
+            let message = `✓ Ready to Submit\n\nYour ${subject.name} lesson schedule totals exactly 10 hours.\n\nDo you want to submit your customized plan?`;
 
             // Ask for confirmation
             if (!confirm(message)) {
@@ -1251,30 +1249,11 @@
             // Clear localStorage
             localStorage.removeItem('teacherPlans');
 
-            // Reset in-memory data
-            teacherPlans = {};
-            currentTeacher = '';
-            currentTeacherSubject = '';
+            // Show success message
+            alert('✓ All Data Cleared\n\nAll teacher data has been successfully deleted. The page will now reload to reset completely.');
 
-            // Reset UI
-            document.getElementById('consolidatedView').style.display = 'none';
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('rigidScheduleSection').style.display = 'block';
-
-            // Remove submission notice if it exists
-            const existingNotice = document.getElementById('submissionNotice');
-            if (existingNotice) {
-                existingNotice.remove();
-            }
-
-            // Hide legend
-            document.getElementById('legendSection').style.display = 'none';
-
-            // Reinitialize the table to show default state
-            initializeRigidScheduleTable();
-
-            alert('✓ All Data Cleared\n\nAll teacher data has been successfully deleted. The tool has been reset to its initial state.');
+            // Force page reload to reset everything
+            location.reload();
         }
 
         function initializeAll() {
